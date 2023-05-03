@@ -22,9 +22,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     private List<Movie> movies = new ArrayList<>();
     private OnReachEndListenner onReachEndListennerl;
     private onMovieClickListenner onMovieClickListenner;
+
     public void setOnReachEndListennerl(OnReachEndListenner onReachEndListennerl) {
         this.onReachEndListennerl = onReachEndListennerl;
     }
+
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
         notifyDataSetChanged();
@@ -45,7 +47,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
         return new MovieViewHolder(view);
     }
-
 
 
     @Override
@@ -69,24 +70,24 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         holder.textViewRating.setBackground(backgroud);
         holder.textViewRating.setText(String.format("%.1f", rating));
 
-        if (position >= movies.size() - 10 && onReachEndListennerl != null){
+        if (position >= movies.size() - 10 && onReachEndListennerl != null) {
             onReachEndListennerl.onReachEnd();
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onMovieClickListenner != null){
+                if (onMovieClickListenner != null) {
                     onMovieClickListenner.onMovieClick(movie);
                 }
             }
         });
 
     }
-    interface  onMovieClickListenner{
+
+    interface onMovieClickListenner {
         void onMovieClick(Movie movie);
     }
-
 
 
     @Override
@@ -95,11 +96,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     }
 
 
-
     interface OnReachEndListenner {
         void onReachEnd();
     }
-
 
 
     static class MovieViewHolder extends RecyclerView.ViewHolder {

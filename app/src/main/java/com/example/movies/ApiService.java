@@ -10,4 +10,7 @@ public interface ApiService {
 
     @GET("movie?token=DR3VZ12-QWY4DWX-N5FZEKV-QHSK1CW&field=rating.kp*search=4-8&sortField=votes.kp&sortType=-1&limit=50")
     Single<MoveiResponse> loadMovies(@Query("page") int page);
+
+    @GET("movie?token=DR3VZ12-QWY4DWX-N5FZEKV-QHSK1CW&field=id&search=666")
+    Single<TrailersResponse> loadTrailers(int id);
 }

@@ -33,7 +33,7 @@ public class Movie implements Serializable {
         return "Movie{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", discription='" + description + '\'' +
+                ", description='" + description + '\'' +
                 ", year=" + year +
                 ", poster=" + poster +
                 ", rating=" + rating +
