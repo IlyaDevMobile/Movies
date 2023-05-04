@@ -4,12 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Trailer implements Serializable {
+public class Trailer  {
 
     @SerializedName("name")
     private String name;
 
-    @SerializedName("name")
+    @SerializedName("url")
     private String url;
 
     public Trailer(String name, String url) {
