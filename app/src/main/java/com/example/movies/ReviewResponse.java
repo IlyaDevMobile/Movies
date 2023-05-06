@@ -13,14 +13,16 @@ public class ReviewResponse {
         this.reviews = reviews;
     }
 
-    public List<Review> getReviews() {
-        return reviews;
-    }
+
 
     @Override
     public String toString() {
         return "ReviewResponse{" +
                 "reviews=" + reviews +
                 '}';
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
     }
 }

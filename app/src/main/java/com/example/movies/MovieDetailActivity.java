@@ -32,6 +32,10 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView textViewYear;
     private TextView textViewDes;
     private RecyclerView recyclerViewTrailer;
+
+    private ReviewAdapter reviewAdapter;
+
+    private RecyclerView recyclerViewReviews;
     private TrailersAdapter trailersAdapter;
 
 
@@ -42,7 +46,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(MovieDetailViewModel.class);
         initViews();
         trailersAdapter = new TrailersAdapter();
+        reviewAdapter = new ReviewAdapter();
         recyclerViewTrailer.setAdapter(trailersAdapter);
+        recyclerViewReviews.setAdapter(reviewAdapter);
         Movie movie =(Movie) getIntent().getSerializableExtra(EXTRA_MOVIE);
 
         Glide.with(this)
@@ -68,28 +74,21 @@ public class MovieDetailActivity extends AppCompatActivity {
 
             }
         });
-        APIFactory.apiservice.loadReviews(movie.getId())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ReviewResponse>() {
-                    @Override
-                    public void accept(ReviewResponse reviewResponse) throws Throwable {
-                        Log.d(TAG,reviewResponse.toString());
+        viewModel.getReviews().observe(this, new Observer<List<Review>>() {
+            @Override
+            public void onChanged(List<Review> reviewList) {
+                reviewAdapter.setReviews(reviewList);
+            }
+        });
+        viewModel.loadReviews(movie.getId());
 
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Throwable {
-                        Log.d(TAG,throwable.toString());
-
-                    }
-                });
 
 
     }
 
     private void initViews(){
         imageViewPoster = findViewById(R.id.imageViewPoster);
+        recyclerViewReviews = findViewById(R.id.recyclerViewReviews);
         textViewTitle = findViewById(R.id.textViewTitle);
          textViewYear = findViewById(R.id.textViewYear);
          textViewDes = findViewById(R.id.textViewDes);
