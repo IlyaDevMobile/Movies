@@ -29,7 +29,7 @@
             android:id="@+id/imageView2"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            app:srcCompat="@android:drawable/ic_media_play" />
+            app:srcCompat="@drawable/playstart" />
 
     </LinearLayout>
 

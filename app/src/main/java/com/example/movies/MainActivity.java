@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBarLoading;
 
     private RecyclerView recyclerViewMovies;
+
     private MoviesAdapter moviesAdapter;
 
     @Override

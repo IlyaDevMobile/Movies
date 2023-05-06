@@ -3,9 +3,11 @@ package com.example.movies;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -29,6 +31,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     private TextView textViewTitle;
     private TextView textViewYear;
     private TextView textViewDes;
+    private RecyclerView recyclerViewTrailer;
+    private TrailersAdapter trailersAdapter;
 
 
     @Override
@@ -37,6 +41,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
         viewModel = new ViewModelProvider(this).get(MovieDetailViewModel.class);
         initViews();
+        trailersAdapter = new TrailersAdapter();
+        recyclerViewTrailer.setAdapter(trailersAdapter);
         Movie movie =(Movie) getIntent().getSerializableExtra(EXTRA_MOVIE);
 
         Glide.with(this)
@@ -50,9 +56,34 @@ public class MovieDetailActivity extends AppCompatActivity {
         viewModel.getTrailers().observe(this, new Observer<List<Trailer>>() {
             @Override
             public void onChanged(List<Trailer> trailers) {
-                Log.d(TAG,trailers.toString());
+                trailersAdapter.setTrailers(trailers);
             }
         });
+        trailersAdapter.setOnTrailerClickListener(new TrailersAdapter.OnTrailerClickListener() {
+            @Override
+            public void onTrailerClick(Trailer trailer) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(trailer.getUrl()));
+                startActivity(intent);
+
+            }
+        });
+        APIFactory.apiservice.loadReviews(movie.getId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ReviewResponse>() {
+                    @Override
+                    public void accept(ReviewResponse reviewResponse) throws Throwable {
+                        Log.d(TAG,reviewResponse.toString());
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d(TAG,throwable.toString());
+
+                    }
+                });
 
 
     }
@@ -62,6 +93,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         textViewTitle = findViewById(R.id.textViewTitle);
          textViewYear = findViewById(R.id.textViewYear);
          textViewDes = findViewById(R.id.textViewDes);
+        recyclerViewTrailer = findViewById(R.id.recyclerViewTrailer);
     }
 
     public static Intent newIntent(Context context, Movie movie){
